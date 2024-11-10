@@ -1,0 +1,63 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int knapsack(int capacity, int weights[], int values[], int n) {
+    int dp[n + 1][capacity + 1];
+
+    for (int i = 0; i <= n; i++) {
+        for (int w = 0; w <= capacity; w++) {
+            dp[i][w] = 0;
+        }
+    }
+
+    for (int i = 1; i <= n; i++) {               
+        for (int w = 1; w <= capacity; w++) {   
+            if (weights[i - 1] <= w) { 
+                dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - weights[i - 1]] + values[i - 1]);
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+
+    return dp[n][capacity];
+}
+
+int main() {
+    int n, capacity;
+    cout << "Enter the number of items: ";
+    cin >> n;
+
+    int weights[n], values[n];
+    cout << "Enter the weights and values of the items:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "Value of item " << i + 1 << ": ";
+        cin >> values[i];
+        cout << "Weight of item " << i + 1 << ": ";
+        cin >> weights[i];
+    }
+
+    cout << "Enter the capacity of the knapsack: ";
+    cin >> capacity;
+
+
+    int max_value = knapsack(capacity, weights, values, n);
+    cout << "The maximum value that can be carried in the knapsack is: " << max_value << endl;
+
+    return 0;
+}
+
+/*Enter the number of item:4
+Enter the weight and value
+Enter the weight 1:5
+Enter the value 1:30
+Enter the weight 2:7
+Enter the value 2:28
+Enter the weight 3:4
+Enter the value 3:20
+Enter the weight 4:2
+Enter the value 4:24
+Enter the capacity of knapsack:12*/
